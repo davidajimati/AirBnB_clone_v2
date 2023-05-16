@@ -14,7 +14,7 @@ touch /data/web_static/releases/test/index.html
 # create a test html file to confirm nginx configuration
 printf %s "
 Your nginx is workin correctly
-" | tee -a /data/web_static/releases/test/index.html > /dev/null
+" > /data/web_static/releases/test/index.html
 
 # create symbolic link
 link_path="/data/web_static/current"
@@ -50,7 +50,7 @@ printf %s "server {
     location = /etc/nginx/html/404.html {
       internal;
     }
-}" | tee -a /etc/nginx/sites-available/default > /dev/null
+}" > /etc/nginx/sites-available/default
 
 # restart nginx
 service nginx restart
