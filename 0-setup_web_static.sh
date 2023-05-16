@@ -30,11 +30,28 @@ ln -s "$target_path" "$link_path"
 sudo chown -R ubuntu: ubuntu /data/
 
 # configure nginx to serve hbnb static
+
 printf %s "
-location /hbnb_static {
+server {
+    listen 80;
+    listen [::]:80;
+    root /etc/nginx/html;
+    index index.html index.htm index.nginx-debian.html
+    server_name _;
+
+    location /hbnb_static {
         alias /data/web_static/current/;
+        }
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+
+    error_page 404 /404.html;
+    location = /etc/nginx/html/404.html {
+      internal;
+    }
 }" > /etc/nginx/sites-available/default
 
 # restart nginx
 sudo service nginx restart
-
