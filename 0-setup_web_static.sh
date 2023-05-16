@@ -6,7 +6,6 @@ apt-get update
 apt-get install -y nginx
 
 # create necessary directories
-mkdir -p /data/
 mkdir -p /data/web_static/releases/
 mkdir -p /data/web_static/shared/
 mkdir -p /data/web_static/releases/test/
@@ -27,7 +26,8 @@ fi
 ln -s "$target_path" "$link_path"
 
 # change folder user and groub to ubuntu
-chown -R 1000:1000 /data/
+chown -R ubuntu /data/
+chgrp -R ubuntu /data/
 
 # configure nginx to serve hbnb static
 
