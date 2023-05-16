@@ -4,7 +4,7 @@
 # using the function do_pack
 import os.path
 from datetime import datetime
-from fabric.api import local
+from fabric import local
 
 
 def do_pack():
