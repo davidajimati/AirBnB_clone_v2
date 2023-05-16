@@ -3,7 +3,7 @@
 
 # install nginx
 apt-get update
-apt-get install nginx
+apt-get install -y nginx
 
 # create necessary directories
 mkdir -p /data/
