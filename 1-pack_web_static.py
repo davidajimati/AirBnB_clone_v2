@@ -13,16 +13,13 @@ def do_pack():
     function to handle whole process
     '''
     # get current datetime in string format
-    cur = datetime.now().strftime("%Y%m%d%H%M%S")
-    file = "web_static_" + cur
+    file = "versions/web_static_" + datetime.utcnow().strftime("%Y%m%d%H%M%S") + ".tgz"
 
     # connect and run command
-    local("mkdir -p versions")
-    local("tar -czvf versions/{}.tgz *".format(file))
 
     if os.path.isdir("versions") is False:
         if local("mkdir -p versions").failed is True:
             return None
-    if local("tar -cvzf {}".format(cur)).failed is True:
+    if local("tar -cvzf {} web_static".format(file)).failed is True:
         return None
     return file
