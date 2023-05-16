@@ -5,34 +5,33 @@
 sudo apt-get update
 sudo apt-get install nginx
 
-# create nexessary directories
-mkdir -p /data/
-mkdir -p /data/web_static/releases/
-mkdir -p /data/web_static/shared/
-mkdir -p /data/web_static/releases/test/
-touch /data/web_static/releases/test/index.html
+# create necessary directories
+sudo mkdir -p /data/
+sudo mkdir -p /data/web_static/releases/
+sudo mkdir -p /data/web_static/shared/
+sudo mkdir -p /data/web_static/releases/test/
+sudo touch /data/web_static/releases/test/index.html
 
 # create a test html file to confirm nginx configuration
 printf %s "
 Your nginx is workin correctly
-" > /data/web_static/releases/test/index.html
+" | sudo tee -a /data/web_static/releases/test/index.html > /dev/null
 
 # create symbolic link
 link_path="/data/web_static/current"
 target_path="/data/web_static/releases/test"
 
 if [ -L "$link_path" ]; then
-    rm "$link_path"
+    sudo rm "$link_path"
 fi
-ln -s "$target_path" "$link_path"
+sudo ln -s "$target_path" "$link_path"
 
 # change folder user and groub to ubuntu
-sudo chown -R ubuntu: ubuntu /data/
+sudo chown -R 1000:1000 /data/
 
 # configure nginx to serve hbnb static
 
-printf %s "
-server {
+printf %s "server {
     listen 80;
     listen [::]:80;
     root /etc/nginx/html;
@@ -51,7 +50,7 @@ server {
     location = /etc/nginx/html/404.html {
       internal;
     }
-}" > /etc/nginx/sites-available/default
+}" | sudo tee -a /etc/nginx/sites-available/default > /dev/null
 
 # restart nginx
 sudo service nginx restart
