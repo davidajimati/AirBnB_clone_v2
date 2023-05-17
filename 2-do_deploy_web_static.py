@@ -8,19 +8,26 @@ env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
-    """This function distributes an archive to web servers"""
-    if (os.path.exists(archive_path) is False):
+    """Create a tar gzipped archive of the directory web_static."""
+    if os.path.exists(archive_path) is False:
         return False
-    filename = '/data/web_static/releases/{}'.format(
-        archive_path.strip(".tgz"))
-    archive = archive_path.lstrip('versions/')
-    run('mkdir -p {}'.format(filename))
-    # run('mkdir /tmp/versions')
-    put('{}'.format(archive_path), "/tmp/")
-    run('tar -xzf /tmp/{} -C {}'.format(archive, filename))
-    run('mv {}/web_static/* {}'.format(filename, filename))
-    run('rm -rf {}/web_static/'.format(filename))
-    run('rm /tmp/{}'.format(archive))
-    run('rm /data/web_static/current')
-    run('ln -sf {} /data/web_static/current'.format(filename))
-    return True
+    else:
+        try:
+            put(archive_path, "/tmp/")
+            """ putting the file to .tgz """
+            file_name = archive_path.split("/")[1]
+            """ splitting .tgz """
+            file_name2 = file_name.split(".")[0]
+            """ spliting archive """
+            final_name = "/data/web_static/releases/" + file_name2 + "/"
+            run("mkdir -p " + final_name)
+            run("tar -xzf /tmp/" + file_name + " -C " + final_name)
+            run("rm /tmp/" + file_name)
+            run("mv " + final_name + "web_static/* " + final_name)
+            run("rm -rf " + final_name + "web_static")
+            run("rm -rf /data/web_static/current")
+            run("ln -s " + final_name + " /data/web_static/current")
+            print("New version deployed!")
+            return True
+        except Exception:
+            return False
