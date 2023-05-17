@@ -3,7 +3,7 @@
 do_deploy"""
 import os
 from fabric.api import run, env, cd, put
-env.hosts = ['54.208.84.31', '54.172.141.180']
+env.hosts = ['18.207.141.82', '34.227.101.66']
 env.user = "ubuntu"
 
 
