@@ -1,40 +1,26 @@
 #!/usr/bin/python3
-'''
-Fabric script to deploy an archive to
-web servers using the function do_deploy
-'''
-from fabric.api import run, put, env
-import os.path
-
-env.hosts = ['3.84.238.139', '34.227.101.66']
-env.user = 'ubuntu'
+"""This script distributes an archive to web servers, using the function
+do_deploy"""
+import os
+from fabric.api import run, env, cd, put
+env.hosts = ['54.208.84.31', '54.172.141.180']
+env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
-    '''
-    fabric function to handle the deployment
-        takes file from local path and pushes it to
-        remote web servers
-    '''
-
-    if os.path.exists(archive_path) is False:
+    """This function distributes an archive to web servers"""
+    if (os.path.exists(archive_path) is False):
         return False
-    try:
-        put(archive_path, "/tmp/")
-        """ putting the file to .tgz """
-        file_name = archive_path.split("/")[1]
-        """ splitting .tgz """
-        file_name2 = file_name.split(".")[0]
-        """ spliting archivo """
-        final_name = "/data/web_static/releases/" + file_name2 + "/"
-        run("mkdir -p " + final_name)
-        run("tar -xzf /tmp/" + file_name + " -C " + final_name)
-        run("rm /tmp/" + file_name)
-        run("mv " + final_name + "web_static/* " + final_name)
-        run("rm -rf " + final_name + "web_static")
-        run("rm -rf /data/web_static/current")
-        run("ln -s " + final_name + " /data/web_static/current")
-        print("New version deployed!")
-        return True
-    except Exception:
-        return False
+    filename = '/data/web_static/releases/{}'.format(
+        archive_path.strip(".tgz"))
+    archive = archive_path.lstrip('versions/')
+    run('mkdir -p {}'.format(filename))
+    # run('mkdir /tmp/versions')
+    put('{}'.format(archive_path), "/tmp/")
+    run('tar -xzf /tmp/{} -C {}'.format(archive, filename))
+    run('mv {}/web_static/* {}'.format(filename, filename))
+    run('rm -rf {}/web_static/'.format(filename))
+    run('rm /tmp/{}'.format(archive))
+    run('rm /data/web_static/current')
+    run('ln -sf {} /data/web_static/current'.format(filename))
+    return True
