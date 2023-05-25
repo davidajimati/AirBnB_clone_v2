@@ -3,7 +3,7 @@
 This module displays ` “Hello HBNB!”`
 via 0.0.0.0 port 5000
 """
-import flask as Flask
+from flask import Flask
 app = Flask(__name__)
 
 
