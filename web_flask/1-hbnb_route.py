@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 '''
 starts a Flask web application:
     displays "Hello HBNB on port 5000
