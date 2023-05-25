@@ -31,15 +31,16 @@ def c_route(text):
     return ("C {}".format(res))
 
 
+@app.route('/python/', defaults={'text': ''}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_route(text):
     '''Displays "python is cool" -> by default
     or python (followed by text)
     '''
-    if not text:
-        return "Python is cool"
-    res = text.replace("_", " ")
-    return ("Python {}".format(res))
+    if text is not '':
+        res = text.replace("_", " ")
+        return ("Python {}".format(res))
+    return "Python is cool"
 
 
 if __name__ == "__main__":
